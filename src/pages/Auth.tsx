@@ -36,7 +36,7 @@ const Auth = () => {
   return (
     <AuthLayout
       title={isLogin ? 'Connexion' : 'Créer un compte'}
-      subtitle={isLogin ? 'Connectez-vous à votre compte EcoLink' : 'Rejoignez la communauté EcoLink'}
+      subtitle={isLogin ? 'Connectez-vous à votre compte Tunisia Green Tech' : 'Rejoignez la communauté Tunisia Green Tech'}
     >
       {isLogin ? (
         <SignInForm

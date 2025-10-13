@@ -38,7 +38,7 @@ export const OnboardingFlow = ({ user }: OnboardingFlowProps) => {
   const handleComplete = () => {
     // Ici, on pourrait sauvegarder les préférences en base de données
     toast({
-      title: "Bienvenue dans EcoLink !",
+      title: "Bienvenue dans Tunisia Green Tech !",
       description: "Votre profil a été configuré avec succès. Vous recevez 100 points de bienvenue !",
     });
     

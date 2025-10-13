@@ -27,8 +27,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
-            <span className="text-2xl font-bold text-green-800">EcoLink</span>
-            <span className="text-sm text-green-600 font-medium">Tunisia</span>
+            <span className="text-2xl font-bold text-green-800">Tunisia Green Tech</span>
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">

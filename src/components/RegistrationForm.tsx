@@ -47,7 +47,7 @@ const RegistrationForm = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Rejoignez EcoLink</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Rejoignez Tunisia Green Tech</h2>
             <p className="text-gray-600">Créez votre compte et commencez à faire la différence</p>
           </div>
 
@@ -203,7 +203,7 @@ const RegistrationForm = () => {
                           id="services"
                           value={formData.services}
                           onChange={(e) => handleInputChange('services', e.target.value)}
-                          placeholder="Listez vos services avec les prix (minimum 1000 TND + 10% de frais EcoLink)"
+                          placeholder="Listez vos services avec les prix (minimum 1000 TND + 10% de frais Tunisia Green Tech)"
                           rows={4}
                         />
                       </div>
@@ -213,8 +213,8 @@ const RegistrationForm = () => {
 
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <p className="text-sm text-yellow-800">
-                    <strong>Note importante :</strong> EcoLink applique des frais de service de 10% 
-                    sur toutes les transactions. Le montant minimum d'intervention est de 1000 TND.
+                    <strong>Note importante :</strong> Tunisia Green Tech applique des frais de service de 10% 
+                    sur toutes les transactions. Le montant minimum d&apos;intervention est de 1000 TND.
                   </p>
                 </div>
 

@@ -17,7 +17,7 @@ export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
               <Leaf className="h-8 w-8 text-primary" />
             </div>
             <span className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EcoLink
+              Tunisia Green Tech
             </span>
           </div>
           <h1 className="text-2xl font-bold text-foreground">{title}</h1>

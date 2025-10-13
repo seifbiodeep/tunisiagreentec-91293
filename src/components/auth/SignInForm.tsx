@@ -62,7 +62,7 @@ export const SignInForm = ({ onToggleMode, onSuccess }: SignInFormProps) => {
       } else {
         toast({
           title: "Connexion réussie",
-          description: "Bienvenue sur EcoLink !",
+          description: "Bienvenue sur Tunisia Green Tech !",
         });
         onSuccess();
       }

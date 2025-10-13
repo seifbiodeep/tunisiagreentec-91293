@@ -38,7 +38,7 @@ export const OnboardingComplete = ({
             Félicitations {userName} ! 🎉
           </h1>
           <p className="text-lg text-muted-foreground">
-            Votre profil EcoLink est maintenant configuré et personnalisé
+            Votre profil Tunisia Green Tech est maintenant configuré et personnalisé
           </p>
         </div>
 
@@ -48,10 +48,10 @@ export const OnboardingComplete = ({
             <h3 className="text-xl font-semibold">Bonus de bienvenue</h3>
           </div>
           <p className="text-muted-foreground mb-4">
-            Recevez 100 points EcoLink pour commencer votre parcours écologique !
+            Recevez 100 points Tunisia Green Tech pour commencer votre parcours écologique !
           </p>
           <Badge className="bg-primary text-primary-foreground px-4 py-2">
-            +100 Points EcoLink 🌟
+            +100 Points Tunisia Green Tech 🌟
           </Badge>
         </div>
       </div>
@@ -95,7 +95,7 @@ export const OnboardingComplete = ({
             <div>
               <h3 className="font-semibold mb-2">Communauté</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                Accès à la communauté EcoLink
+                Accès à la communauté Tunisia Green Tech
               </p>
               <Badge variant="outline">Membre actif ✓</Badge>
             </div>

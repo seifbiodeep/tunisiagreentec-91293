@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Leaf className="h-8 w-8 text-green-500" />
-              <span className="text-2xl font-bold">EcoLink</span>
+              <span className="text-2xl font-bold">Tunisia Green Tech</span>
             </div>
             <p className="text-gray-400">
               La première plateforme tunisienne pour connecter les citoyens 
@@ -41,7 +41,7 @@ const Footer = () => {
             <div className="space-y-2 text-gray-400">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <span>contact@ecolink.tn</span>
+                <span>contact@tunisiagreentech.tn</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
@@ -56,7 +56,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 EcoLink Tunisia. Tous droits réservés.</p>
+          <p>&copy; 2024 Tunisia Green Tech. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

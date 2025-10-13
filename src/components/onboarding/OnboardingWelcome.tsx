@@ -20,8 +20,8 @@ export const OnboardingWelcome = ({ onNext, userName }: OnboardingWelcomeProps) 
           Bienvenue {userName} ! 🌱
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Félicitations ! Votre compte EcoLink est créé. Nous allons maintenant personnaliser votre expérience 
-          en fonction de vos centres d'intérêt écologiques.
+          Félicitations ! Votre compte Tunisia Green Tech est créé. Nous allons maintenant personnaliser votre expérience 
+          en fonction de vos centres d&apos;intérêt écologiques.
         </p>
       </div>
 

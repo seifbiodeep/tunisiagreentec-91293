@@ -28,7 +28,7 @@ const Hero = () => {
               <span className="text-green-600"> Environnement Durable</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              EcoLink est la première plateforme tunisienne qui connecte les citoyens 
+              Tunisia Green Tech est la première plateforme tunisienne qui connecte les citoyens 
               aux organisations pour résoudre les problèmes écologiques de manière efficace et transparente.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
