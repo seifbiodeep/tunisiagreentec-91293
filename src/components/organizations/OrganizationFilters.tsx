@@ -55,7 +55,7 @@ export const OrganizationFilters = ({
             <SelectValue placeholder="Type d'organisation" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tous les types</SelectItem>
+            <SelectItem value="all">Tous les types</SelectItem>
             <SelectItem value="entreprise">Entreprise</SelectItem>
             <SelectItem value="association">Association</SelectItem>
             <SelectItem value="ong">ONG</SelectItem>
@@ -68,7 +68,7 @@ export const OrganizationFilters = ({
             <SelectValue placeholder="Domaine RSE" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tous les domaines</SelectItem>
+            <SelectItem value="all">Tous les domaines</SelectItem>
             <SelectItem value="environnement">Environnement</SelectItem>
             <SelectItem value="social">Social</SelectItem>
             <SelectItem value="economique">Économique</SelectItem>
@@ -81,7 +81,7 @@ export const OrganizationFilters = ({
             <SelectValue placeholder="Localisation" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Toutes les régions</SelectItem>
+            <SelectItem value="all">Toutes les régions</SelectItem>
             <SelectItem value="tunis">Tunis</SelectItem>
             <SelectItem value="sfax">Sfax</SelectItem>
             <SelectItem value="sousse">Sousse</SelectItem>
@@ -96,7 +96,7 @@ export const OrganizationFilters = ({
             <SelectValue placeholder="Disponibilité" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Toutes</SelectItem>
+            <SelectItem value="all">Toutes</SelectItem>
             <SelectItem value="disponible">Disponible</SelectItem>
             <SelectItem value="occupé">Occupé</SelectItem>
             <SelectItem value="en_pause">En pause</SelectItem>
