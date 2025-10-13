@@ -32,7 +32,8 @@ const Header = () => {
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#accueil" className="text-gray-700 hover:text-green-600 transition-colors">Accueil</a>
+            <a href="/" className="text-gray-700 hover:text-green-600 transition-colors">Accueil</a>
+            <a href="/organisations" className="text-gray-700 hover:text-green-600 transition-colors">Organisations RSE</a>
             <a href="#services" className="text-gray-700 hover:text-green-600 transition-colors">Services</a>
             <a href="#apropos" className="text-gray-700 hover:text-green-600 transition-colors">À propos</a>
             <a href="#contact" className="text-gray-700 hover:text-green-600 transition-colors">Contact</a>
@@ -77,7 +78,8 @@ const Header = () => {
         {isMenuOpen && (
           <nav className="md:hidden mt-4 py-4 border-t">
             <div className="flex flex-col space-y-4">
-              <a href="#accueil" className="text-gray-700 hover:text-green-600 transition-colors">Accueil</a>
+              <a href="/" className="text-gray-700 hover:text-green-600 transition-colors">Accueil</a>
+              <a href="/organisations" className="text-gray-700 hover:text-green-600 transition-colors">Organisations RSE</a>
               <a href="#services" className="text-gray-700 hover:text-green-600 transition-colors">Services</a>
               <a href="#apropos" className="text-gray-700 hover:text-green-600 transition-colors">À propos</a>
               <a href="#contact" className="text-gray-700 hover:text-green-600 transition-colors">Contact</a>

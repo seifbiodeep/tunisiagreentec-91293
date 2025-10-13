@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/hooks/useAuth';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
+import Organizations from '@/pages/Organizations';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/organisations" element={<Organizations />} />
             </Routes>
             <Toaster />
           </div>

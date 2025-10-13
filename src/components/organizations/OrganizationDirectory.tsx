@@ -162,11 +162,11 @@ export const OrganizationDirectory = () => {
         org.location.city.toLowerCase().includes(filters.search.toLowerCase()) ||
         org.specialties.some(s => s.toLowerCase().includes(filters.search.toLowerCase()));
       
-      const matchesType = !filters.type || org.type === filters.type;
-      const matchesCategory = !filters.category || org.category === filters.category;
-      const matchesLocation = !filters.location || org.location.city.toLowerCase() === filters.location.toLowerCase();
+      const matchesType = !filters.type || filters.type === 'all' || org.type === filters.type;
+      const matchesCategory = !filters.category || filters.category === 'all' || org.category === filters.category;
+      const matchesLocation = !filters.location || filters.location === 'all' || org.location.city.toLowerCase() === filters.location.toLowerCase();
       const matchesRating = org.rating >= filters.rating;
-      const matchesAvailability = !filters.availability || org.availability.status === filters.availability;
+      const matchesAvailability = !filters.availability || filters.availability === 'all' || org.availability.status === filters.availability;
       const matchesCertification = !filters.certification || org.certifications.length > 0;
       const matchesRseScore = org.rseScore >= filters.rseScore;
 
@@ -221,11 +221,11 @@ export const OrganizationDirectory = () => {
   const resetFilters = () => {
     setFilters({
       search: '',
-      type: '',
-      category: '',
-      location: '',
+      type: 'all',
+      category: 'all',
+      location: 'all',
       rating: 0,
-      availability: '',
+      availability: 'all',
       certification: false,
       rseScore: 0
     });
