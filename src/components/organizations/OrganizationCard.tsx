@@ -3,52 +3,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Globe, DollarSign, ExternalLink, Star, Users, Calendar, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-export interface Organization {
-  id: string;
-  name: string;
-  type: 'entreprise' | 'association' | 'ong' | 'gouvernement';
-  category: 'environnement' | 'social' | 'economique' | 'gouvernance';
-  location: {
-    city: string;
-    region: string;
-    coordinates?: { lat: number; lng: number };
-  };
-  contact: {
-    phone?: string;
-    email?: string;
-    website?: string;
-    socialMedia?: Array<{ platform: string; url: string; }>;
-  };
-  rating: number;
-  certifications: string[];
-  services: Array<{
-    id: string;
-    name: string;
-    description: string;
-    price: string;
-    duration?: string;
-    category: string;
-    impact: 'faible' | 'moyen' | 'fort';
-  }>;
-  stats: {
-    projectsCompleted: number;
-    yearsActive: number;
-    teamSize: number;
-    clientsSatisfied: number;
-  };
-  availability: {
-    status: 'disponible' | 'occupé' | 'en_pause';
-    nextAvailable?: string;
-  };
-  rseScore: number;
-  specialties: string[];
-}
+import { Organization } from '@/hooks/useOrganizations';
 
 interface OrganizationCardProps {
   organization: Organization;
   onContact: (org: Organization) => void;
-  onRequestQuote: (org: Organization, service: Organization['services'][0]) => void;
+  onRequestQuote: (org: Organization, service: any) => void;
   onViewDetails: (org: Organization) => void;
 }
 
@@ -61,8 +21,8 @@ export const OrganizationCard = ({
   const { toast } = useToast();
 
   const handleCall = () => {
-    if (organization.contact.phone) {
-      window.open(`tel:${organization.contact.phone}`, '_self');
+    if (organization.phone) {
+      window.open(`tel:${organization.phone}`, '_self');
       toast({
         title: "Appel en cours",
         description: `Appel vers ${organization.name}`,
@@ -71,10 +31,10 @@ export const OrganizationCard = ({
   };
 
   const handleVisitWebsite = () => {
-    if (organization.contact.website) {
-      const url = organization.contact.website.startsWith('http') 
-        ? organization.contact.website 
-        : `https://${organization.contact.website}`;
+    if (organization.website) {
+      const url = organization.website.startsWith('http') 
+        ? organization.website 
+        : `https://${organization.website}`;
       window.open(url, '_blank');
     }
   };
@@ -84,12 +44,12 @@ export const OrganizationCard = ({
       case 'entreprise': return 'bg-blue-100 text-blue-800';
       case 'association': return 'bg-green-100 text-green-800';
       case 'ong': return 'bg-purple-100 text-purple-800';
-      case 'gouvernement': return 'bg-orange-100 text-orange-800';
+      case 'gouvernemental': return 'bg-orange-100 text-orange-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getAvailabilityColor = (status: Organization['availability']['status']) => {
+  const getAvailabilityColor = (status: Organization['availability_status']) => {
     switch (status) {
       case 'disponible': return 'bg-green-100 text-green-800';
       case 'occupé': return 'bg-red-100 text-red-800';
@@ -105,7 +65,7 @@ export const OrganizationCard = ({
           <div className="flex-1">
             <CardTitle className="text-xl mb-2 flex items-center gap-2">
               {organization.name}
-              {organization.rseScore > 85 && (
+              {organization.rse_score > 85 && (
                 <CheckCircle className="h-5 w-5 text-green-600" />
               )}
             </CardTitle>
@@ -116,8 +76,8 @@ export const OrganizationCard = ({
               <Badge variant="outline">
                 {organization.category}
               </Badge>
-              <Badge className={getAvailabilityColor(organization.availability.status)}>
-                {organization.availability.status}
+              <Badge className={getAvailabilityColor(organization.availability_status)}>
+                {organization.availability_status}
               </Badge>
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -127,11 +87,11 @@ export const OrganizationCard = ({
               </div>
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>{organization.stats.teamSize} membres</span>
+                <span>{organization.team_size} membres</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                <span>{organization.stats.yearsActive} ans</span>
+                <span>{organization.years_active} ans</span>
               </div>
             </div>
           </div>
@@ -141,31 +101,31 @@ export const OrganizationCard = ({
       <CardContent className="space-y-4">
         <div className="flex items-center gap-2 text-muted-foreground">
           <MapPin className="h-4 w-4" />
-          <span>{organization.location.city}, {organization.location.region}</span>
+          <span>{organization.city}, {organization.region}</span>
         </div>
 
-        {organization.contact.phone && (
+        {organization.phone && (
           <button
             onClick={handleCall}
             className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors w-full text-left"
           >
             <Phone className="h-4 w-4" />
-            <span>{organization.contact.phone}</span>
+            <span>{organization.phone}</span>
           </button>
         )}
 
-        {organization.contact.website && (
+        {organization.website && (
           <button
             onClick={handleVisitWebsite}
             className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors w-full text-left"
           >
             <Globe className="h-4 w-4" />
-            <span>{organization.contact.website}</span>
+            <span>{organization.website}</span>
             <ExternalLink className="h-3 w-3" />
           </button>
         )}
 
-        {organization.certifications.length > 0 && (
+        {organization.certifications && organization.certifications.length > 0 && (
           <div>
             <h4 className="font-medium mb-2 text-sm">Certifications RSE</h4>
             <div className="flex flex-wrap gap-1">
@@ -183,48 +143,50 @@ export const OrganizationCard = ({
           </div>
         )}
 
-        <div>
-          <h4 className="font-medium mb-3">Services phares</h4>
-          <div className="space-y-2">
-            {organization.services.slice(0, 2).map((service) => (
-              <div key={service.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                <div className="flex-1">
-                  <span className="font-medium text-sm">{service.name}</span>
-                  <p className="text-xs text-muted-foreground mt-1">{service.description}</p>
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-primary">
-                    <DollarSign className="h-4 w-4" />
-                    <span className="font-semibold text-sm">{service.price}</span>
+        {organization.services && organization.services.length > 0 && (
+          <div>
+            <h4 className="font-medium mb-3">Services phares</h4>
+            <div className="space-y-2">
+              {organization.services.slice(0, 2).map((service) => (
+                <div key={service.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div className="flex-1">
+                    <span className="font-medium text-sm">{service.name}</span>
+                    <p className="text-xs text-muted-foreground mt-1">{service.description}</p>
                   </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    onClick={() => onRequestQuote(organization, service)}
-                    className="mt-1 text-xs"
-                  >
-                    Devis
-                  </Button>
+                  <div className="text-right">
+                    <div className="flex items-center gap-1 text-primary">
+                      <DollarSign className="h-4 w-4" />
+                      <span className="font-semibold text-sm">{service.price}</span>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => onRequestQuote(organization, service)}
+                      className="mt-1 text-xs"
+                    >
+                      Devis
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
-            {organization.services.length > 2 && (
-              <p className="text-xs text-muted-foreground text-center py-2">
-                +{organization.services.length - 2} autres services
-              </p>
-            )}
+              ))}
+              {organization.services.length > 2 && (
+                <p className="text-xs text-muted-foreground text-center py-2">
+                  +{organization.services.length - 2} autres services
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Score RSE</span>
-            <span className="text-lg font-bold text-primary">{organization.rseScore}/100</span>
+            <span className="text-lg font-bold text-primary">{organization.rse_score}/100</span>
           </div>
           <div className="w-full bg-muted rounded-full h-2">
             <div 
               className="bg-primary h-2 rounded-full transition-all duration-300"
-              style={{ width: `${organization.rseScore}%` }}
+              style={{ width: `${organization.rse_score}%` }}
             />
           </div>
         </div>
@@ -248,3 +210,5 @@ export const OrganizationCard = ({
     </Card>
   );
 };
+
+export type { Organization };

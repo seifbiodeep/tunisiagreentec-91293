@@ -14,7 +14,215 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      organization_services: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          duration: string | null
+          id: string
+          impact_level: string | null
+          name: string
+          organization_id: string
+          price: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          id?: string
+          impact_level?: string | null
+          name: string
+          organization_id: string
+          price: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          id?: string
+          impact_level?: string | null
+          name?: string
+          organization_id?: string
+          price?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_services_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          address: string | null
+          availability_status: string | null
+          category: string
+          certifications: string[] | null
+          city: string
+          clients_satisfied: number | null
+          created_at: string | null
+          description: string | null
+          email: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          next_available_date: string | null
+          phone: string | null
+          projects_completed: number | null
+          rating: number | null
+          region: string
+          rse_score: number | null
+          specialties: string[] | null
+          team_size: number | null
+          type: string
+          updated_at: string | null
+          user_id: string | null
+          verified: boolean | null
+          website: string | null
+          years_active: number | null
+        }
+        Insert: {
+          address?: string | null
+          availability_status?: string | null
+          category: string
+          certifications?: string[] | null
+          city: string
+          clients_satisfied?: number | null
+          created_at?: string | null
+          description?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          next_available_date?: string | null
+          phone?: string | null
+          projects_completed?: number | null
+          rating?: number | null
+          region: string
+          rse_score?: number | null
+          specialties?: string[] | null
+          team_size?: number | null
+          type: string
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+          website?: string | null
+          years_active?: number | null
+        }
+        Update: {
+          address?: string | null
+          availability_status?: string | null
+          category?: string
+          certifications?: string[] | null
+          city?: string
+          clients_satisfied?: number | null
+          created_at?: string | null
+          description?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          next_available_date?: string | null
+          phone?: string | null
+          projects_completed?: number | null
+          rating?: number | null
+          region?: string
+          rse_score?: number | null
+          specialties?: string[] | null
+          team_size?: number | null
+          type?: string
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+          website?: string | null
+          years_active?: number | null
+        }
+        Relationships: []
+      }
+      problems: {
+        Row: {
+          assigned_org_id: string | null
+          created_at: string | null
+          danger_level: string
+          description: string
+          id: string
+          image_url: string | null
+          location: string
+          location_lat: number | null
+          location_lng: number | null
+          reporter_id: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_org_id?: string | null
+          created_at?: string | null
+          danger_level: string
+          description: string
+          id?: string
+          image_url?: string | null
+          location: string
+          location_lat?: number | null
+          location_lng?: number | null
+          reporter_id: string
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_org_id?: string | null
+          created_at?: string | null
+          danger_level?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          location?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          reporter_id?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

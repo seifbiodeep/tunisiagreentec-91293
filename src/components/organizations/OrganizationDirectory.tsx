@@ -1,147 +1,19 @@
 import { useState, useMemo } from 'react';
-import { OrganizationCard, Organization } from './OrganizationCard';
+import { OrganizationCard } from './OrganizationCard';
 import { OrganizationFilters, FilterState } from './OrganizationFilters';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Building2, TrendingUp, Users, Award, MapPin, Phone, Globe, Mail } from 'lucide-react';
-
-// Données enrichies d'organisations RSE
-const mockOrganizations: Organization[] = [
-  {
-    id: '1',
-    name: 'EcoClean Tunisie',
-    type: 'entreprise',
-    category: 'environnement',
-    location: { city: 'Tunis', region: 'Grand Tunis' },
-    contact: {
-      phone: '+216 71 123 456',
-      email: 'contact@ecoclean.tn',
-      website: 'www.ecoclean.tn',
-      socialMedia: [
-        { platform: 'LinkedIn', url: 'https://linkedin.com/company/ecoclean-tunisie' }
-      ]
-    },
-    rating: 4.8,
-    certifications: ['ISO 14001', 'RSE Tunisie', 'B-Corp'],
-    services: [
-      {
-        id: 's1',
-        name: 'Nettoyage de décharges',
-        description: 'Intervention complète avec équipement professionnel',
-        price: '1500 TND',
-        duration: '2-3 jours',
-        category: 'nettoyage',
-        impact: 'fort'
-      },
-      {
-        id: 's2',
-        name: 'Traitement des eaux usées',
-        description: 'Solutions écologiques pour le traitement',
-        price: '2500 TND',
-        duration: '1-2 semaines',
-        category: 'traitement',
-        impact: 'fort'
-      }
-    ],
-    stats: {
-      projectsCompleted: 150,
-      yearsActive: 8,
-      teamSize: 25,
-      clientsSatisfied: 140
-    },
-    availability: { status: 'disponible' },
-    rseScore: 92,
-    specialties: ['Décontamination', 'Recyclage', 'Audit environnemental']
-  },
-  {
-    id: '2',
-    name: 'Association Verte Tunisie',
-    type: 'association',
-    category: 'environnement',
-    location: { city: 'Sfax', region: 'Centre' },
-    contact: {
-      phone: '+216 74 987 654',
-      email: 'info@vertetunisie.org',
-      socialMedia: [
-        { platform: 'Facebook', url: 'https://facebook.com/vertetunisie' },
-        { platform: 'Instagram', url: 'https://instagram.com/vertetunisie' }
-      ]
-    },
-    rating: 4.6,
-    certifications: ['Agrément gouvernemental', 'Label Eco-Association'],
-    services: [
-      {
-        id: 's3',
-        name: 'Sensibilisation environnementale',
-        description: 'Programmes éducatifs pour écoles et entreprises',
-        price: 'Gratuit',
-        duration: '1 jour',
-        category: 'education',
-        impact: 'moyen'
-      },
-      {
-        id: 's4',
-        name: 'Plantation d\'arbres',
-        description: 'Campagnes de reboisement participatif',
-        price: '800 TND',
-        duration: '1 jour',
-        category: 'plantation',
-        impact: 'fort'
-      }
-    ],
-    stats: {
-      projectsCompleted: 85,
-      yearsActive: 12,
-      teamSize: 15,
-      clientsSatisfied: 200
-    },
-    availability: { status: 'disponible' },
-    rseScore: 88,
-    specialties: ['Éducation environnementale', 'Reboisement', 'Mobilisation citoyenne']
-  },
-  {
-    id: '3',
-    name: 'SocialTech Solutions',
-    type: 'entreprise',
-    category: 'social',
-    location: { city: 'Sousse', region: 'Centre-Est' },
-    contact: {
-      phone: '+216 73 456 789',
-      email: 'contact@socialtech.tn',
-      website: 'www.socialtech.tn'
-    },
-    rating: 4.7,
-    certifications: ['ISO 26000', 'Great Place to Work'],
-    services: [
-      {
-        id: 's5',
-        name: 'Formation professionnelle',
-        description: 'Programmes d\'insertion pour jeunes défavorisés',
-        price: '1200 TND',
-        duration: '3 mois',
-        category: 'formation',
-        impact: 'fort'
-      }
-    ],
-    stats: {
-      projectsCompleted: 45,
-      yearsActive: 5,
-      teamSize: 20,
-      clientsSatisfied: 80
-    },
-    availability: { status: 'occupé', nextAvailable: '2024-02-15' },
-    rseScore: 85,
-    specialties: ['Inclusion sociale', 'Formation numérique', 'Entrepreneuriat social']
-  }
-];
+import { useOrganizations, Organization } from '@/hooks/useOrganizations';
 
 export const OrganizationDirectory = () => {
   const { toast } = useToast();
+  const { organizations: dbOrganizations, loading } = useOrganizations();
   const [selectedOrganization, setSelectedOrganization] = useState<Organization | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [sortBy, setSortBy] = useState<'rating' | 'rseScore' | 'distance'>('rating');
+  const [sortBy, setSortBy] = useState<'rating' | 'rse_score' | 'distance'>('rating');
   
   const [filters, setFilters] = useState<FilterState>({
     search: '',
@@ -156,19 +28,19 @@ export const OrganizationDirectory = () => {
 
   // Filtrage et tri des organisations
   const filteredOrganizations = useMemo(() => {
-    let filtered = mockOrganizations.filter(org => {
+    let filtered = dbOrganizations.filter(org => {
       const matchesSearch = !filters.search || 
         org.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-        org.location.city.toLowerCase().includes(filters.search.toLowerCase()) ||
-        org.specialties.some(s => s.toLowerCase().includes(filters.search.toLowerCase()));
+        org.city.toLowerCase().includes(filters.search.toLowerCase()) ||
+        (org.specialties && org.specialties.some(s => s.toLowerCase().includes(filters.search.toLowerCase())));
       
       const matchesType = !filters.type || filters.type === 'all' || org.type === filters.type;
       const matchesCategory = !filters.category || filters.category === 'all' || org.category === filters.category;
-      const matchesLocation = !filters.location || filters.location === 'all' || org.location.city.toLowerCase() === filters.location.toLowerCase();
+      const matchesLocation = !filters.location || filters.location === 'all' || org.city.toLowerCase() === filters.location.toLowerCase();
       const matchesRating = org.rating >= filters.rating;
-      const matchesAvailability = !filters.availability || filters.availability === 'all' || org.availability.status === filters.availability;
-      const matchesCertification = !filters.certification || org.certifications.length > 0;
-      const matchesRseScore = org.rseScore >= filters.rseScore;
+      const matchesAvailability = !filters.availability || filters.availability === 'all' || org.availability_status === filters.availability;
+      const matchesCertification = !filters.certification || (org.certifications && org.certifications.length > 0);
+      const matchesRseScore = org.rse_score >= filters.rseScore;
 
       return matchesSearch && matchesType && matchesCategory && matchesLocation && 
              matchesRating && matchesAvailability && matchesCertification && matchesRseScore;
@@ -179,18 +51,17 @@ export const OrganizationDirectory = () => {
       switch (sortBy) {
         case 'rating':
           return b.rating - a.rating;
-        case 'rseScore':
-          return b.rseScore - a.rseScore;
+        case 'rse_score':
+          return b.rse_score - a.rse_score;
         case 'distance':
-          // Ici on pourrait calculer la distance réelle
-          return a.location.city.localeCompare(b.location.city);
+          return a.city.localeCompare(b.city);
         default:
           return 0;
       }
     });
 
     return filtered;
-  }, [filters, sortBy]);
+  }, [dbOrganizations, filters, sortBy]);
 
   const activeFiltersCount = useMemo(() => {
     return Object.values(filters).filter(value => 
@@ -206,7 +77,7 @@ export const OrganizationDirectory = () => {
     });
   };
 
-  const handleRequestQuote = (org: Organization, service: Organization['services'][0]) => {
+  const handleRequestQuote = (org: Organization, service: any) => {
     toast({
       title: "Demande de devis",
       description: `Devis demandé pour ${service.name} auprès de ${org.name}`,
@@ -231,6 +102,16 @@ export const OrganizationDirectory = () => {
     });
   };
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-12">
+          <div className="text-lg">Chargement des organisations...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* En-tête avec statistiques */}
@@ -242,24 +123,24 @@ export const OrganizationDirectory = () => {
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
           <div className="text-center">
-            <div className="text-2xl font-bold text-primary">{mockOrganizations.length}</div>
+            <div className="text-2xl font-bold text-primary">{dbOrganizations.length}</div>
             <div className="text-sm text-muted-foreground">Organisations</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">
-              {mockOrganizations.reduce((sum, org) => sum + org.services.length, 0)}
+              {dbOrganizations.reduce((sum, org) => sum + (org.services?.length || 0), 0)}
             </div>
             <div className="text-sm text-muted-foreground">Services</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">
-              {mockOrganizations.filter(org => org.availability.status === 'disponible').length}
+              {dbOrganizations.filter(org => org.availability_status === 'disponible').length}
             </div>
             <div className="text-sm text-muted-foreground">Disponibles</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">
-              {Math.round(mockOrganizations.reduce((sum, org) => sum + org.rseScore, 0) / mockOrganizations.length)}
+              {dbOrganizations.length > 0 ? Math.round(dbOrganizations.reduce((sum, org) => sum + org.rse_score, 0) / dbOrganizations.length) : 0}
             </div>
             <div className="text-sm text-muted-foreground">Score RSE moyen</div>
           </div>
@@ -295,7 +176,7 @@ export const OrganizationDirectory = () => {
             className="text-sm border rounded px-2 py-1"
           >
             <option value="rating">Note</option>
-            <option value="rseScore">Score RSE</option>
+            <option value="rse_score">Score RSE</option>
             <option value="distance">Distance</option>
           </select>
         </div>
@@ -344,39 +225,41 @@ export const OrganizationDirectory = () => {
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
-                        {selectedOrganization.location.city}, {selectedOrganization.location.region}
+                        {selectedOrganization.city}, {selectedOrganization.region}
                       </div>
-                      {selectedOrganization.contact.phone && (
+                      {selectedOrganization.phone && (
                         <div className="flex items-center gap-2">
                           <Phone className="h-4 w-4" />
-                          {selectedOrganization.contact.phone}
+                          {selectedOrganization.phone}
                         </div>
                       )}
-                      {selectedOrganization.contact.email && (
+                      {selectedOrganization.email && (
                         <div className="flex items-center gap-2">
                           <Mail className="h-4 w-4" />
-                          {selectedOrganization.contact.email}
+                          {selectedOrganization.email}
                         </div>
                       )}
-                      {selectedOrganization.contact.website && (
+                      {selectedOrganization.website && (
                         <div className="flex items-center gap-2">
                           <Globe className="h-4 w-4" />
-                          {selectedOrganization.contact.website}
+                          {selectedOrganization.website}
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <div>
-                    <h4 className="font-medium mb-2">Spécialités</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedOrganization.specialties.map((specialty, index) => (
-                        <Badge key={index} variant="secondary">
-                          {specialty}
-                        </Badge>
-                      ))}
+                  {selectedOrganization.specialties && selectedOrganization.specialties.length > 0 && (
+                    <div>
+                      <h4 className="font-medium mb-2">Spécialités</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedOrganization.specialties.map((specialty, index) => (
+                          <Badge key={index} variant="secondary">
+                            {specialty}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 <div className="space-y-4">
@@ -385,52 +268,58 @@ export const OrganizationDirectory = () => {
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center gap-2">
                         <TrendingUp className="h-4 w-4" />
-                        <span>{selectedOrganization.stats.projectsCompleted} projets</span>
+                        <span>{selectedOrganization.projects_completed} projets</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Users className="h-4 w-4" />
-                        <span>{selectedOrganization.stats.teamSize} membres</span>
+                        <span>{selectedOrganization.team_size} membres</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Award className="h-4 w-4" />
-                        <span>{selectedOrganization.stats.yearsActive} ans d'expérience</span>
+                        <span>{selectedOrganization.years_active} ans d&apos;expérience</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span>Score RSE: {selectedOrganization.rseScore}/100</span>
+                        <span>Score RSE: {selectedOrganization.rse_score}/100</span>
                       </div>
                     </div>
                   </div>
 
-                  <div>
-                    <h4 className="font-medium mb-2">Certifications</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedOrganization.certifications.map((cert, index) => (
-                        <Badge key={index} variant="outline">
-                          {cert}
-                        </Badge>
-                      ))}
+                  {selectedOrganization.certifications && selectedOrganization.certifications.length > 0 && (
+                    <div>
+                      <h4 className="font-medium mb-2">Certifications</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedOrganization.certifications.map((cert, index) => (
+                          <Badge key={index} variant="outline">
+                            {cert}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
-              <div className="mt-6">
-                <h4 className="font-medium mb-4">Tous les services</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedOrganization.services.map((service) => (
-                    <div key={service.id} className="border rounded-lg p-4">
-                      <h5 className="font-medium">{service.name}</h5>
-                      <p className="text-sm text-muted-foreground mt-1">{service.description}</p>
-                      <div className="flex items-center justify-between mt-2">
-                        <span className="font-medium text-primary">{service.price}</span>
-                        <Badge variant={service.impact === 'fort' ? 'default' : 'secondary'}>
-                          Impact {service.impact}
-                        </Badge>
+              {selectedOrganization.services && selectedOrganization.services.length > 0 && (
+                <div className="mt-6">
+                  <h4 className="font-medium mb-4">Tous les services</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {selectedOrganization.services.map((service) => (
+                      <div key={service.id} className="border rounded-lg p-4">
+                        <h5 className="font-medium">{service.name}</h5>
+                        <p className="text-sm text-muted-foreground mt-1">{service.description}</p>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="font-medium text-primary">{service.price}</span>
+                          {service.impact_level && (
+                            <Badge variant={service.impact_level === 'fort' ? 'default' : 'secondary'}>
+                              Impact {service.impact_level}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </DialogContent>
