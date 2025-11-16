@@ -6,6 +6,7 @@ import { AuthProvider } from '@/hooks/useAuth';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
 import Organizations from '@/pages/Organizations';
+import Problems from '@/pages/Problems';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/organisations" element={<Organizations />} />
+              <Route path="/problemes" element={<Problems />} />
             </Routes>
             <Toaster />
           </div>

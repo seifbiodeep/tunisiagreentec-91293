@@ -33,6 +33,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-6">
             <a href="/" className="text-gray-700 hover:text-green-600 transition-colors">Accueil</a>
             <a href="/organisations" className="text-gray-700 hover:text-green-600 transition-colors">Organisations RSE</a>
+            <a href="/problemes" className="text-gray-700 hover:text-green-600 transition-colors">Problèmes</a>
             <a href="#services" className="text-gray-700 hover:text-green-600 transition-colors">Services</a>
             <a href="#apropos" className="text-gray-700 hover:text-green-600 transition-colors">À propos</a>
             <a href="#contact" className="text-gray-700 hover:text-green-600 transition-colors">Contact</a>
@@ -79,6 +80,7 @@ const Header = () => {
             <div className="flex flex-col space-y-4">
               <a href="/" className="text-gray-700 hover:text-green-600 transition-colors">Accueil</a>
               <a href="/organisations" className="text-gray-700 hover:text-green-600 transition-colors">Organisations RSE</a>
+              <a href="/problemes" className="text-gray-700 hover:text-green-600 transition-colors">Problèmes</a>
               <a href="#services" className="text-gray-700 hover:text-green-600 transition-colors">Services</a>
               <a href="#apropos" className="text-gray-700 hover:text-green-600 transition-colors">À propos</a>
               <a href="#contact" className="text-gray-700 hover:text-green-600 transition-colors">Contact</a>
