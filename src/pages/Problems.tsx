@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProblemsList } from '@/components/problems/ProblemsList';
+import { ProblemsMap } from '@/components/problems/ProblemsMap';
 import { ProblemDetailsDialog } from '@/components/problems/ProblemDetailsDialog';
 import { useProblems, Problem } from '@/hooks/useProblems';
 import { useAuth } from '@/hooks/useAuth';
-import { Plus, AlertCircle } from 'lucide-react';
+import { Plus, Map, List } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -93,33 +95,35 @@ const Problems = () => {
               </div>
             </div>
 
-            {!user && (
-              <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                    Vous devez être connecté pour signaler un problème
-                  </p>
-                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                    Créez un compte ou connectez-vous pour contribuer à la protection de l'environnement
-                  </p>
-                  <Button 
-                    variant="link" 
-                    className="text-blue-600 dark:text-blue-400 px-0 h-auto mt-2"
-                    onClick={() => navigate('/auth')}
-                  >
-                    Se connecter →
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Problems List */}
-          <ProblemsList 
-            problems={problems} 
-            onViewDetails={handleViewDetails}
-          />
+          {/* Tabs for List and Map views */}
+          <Tabs defaultValue="list" className="w-full">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
+              <TabsTrigger value="list" className="flex items-center gap-2">
+                <List className="w-4 h-4" />
+                Liste
+              </TabsTrigger>
+              <TabsTrigger value="map" className="flex items-center gap-2">
+                <Map className="w-4 h-4" />
+                Carte
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="list">
+              <ProblemsList 
+                problems={problems} 
+                onViewDetails={handleViewDetails}
+              />
+            </TabsContent>
+            
+            <TabsContent value="map">
+              <ProblemsMap 
+                problems={problems} 
+                onSelectProblem={handleViewDetails}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
 
