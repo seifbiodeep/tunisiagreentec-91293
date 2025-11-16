@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Problem } from '@/hooks/useProblems';
+import type * as GeoJSON from 'geojson';
 
 interface ProblemsMapProps {
   problems: Problem[];
@@ -50,6 +51,92 @@ export const ProblemsMap = ({ problems, onSelectProblem }: ProblemsMapProps) => 
     // Remove existing markers
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
+
+    // Prepare GeoJSON data for heatmap
+    const geojsonData: GeoJSON.FeatureCollection = {
+      type: 'FeatureCollection',
+      features: problems
+        .filter(p => p.location_lat && p.location_lng)
+        .map(problem => ({
+          type: 'Feature',
+          properties: {
+            id: problem.id,
+            title: problem.title,
+            danger_level: problem.danger_level,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [problem.location_lng!, problem.location_lat!],
+          },
+        })),
+    };
+
+    // Add or update heatmap source and layer
+    const sourceId = 'problems-heat';
+    const layerId = 'problems-heatmap';
+
+    if (map.current.getSource(sourceId)) {
+      (map.current.getSource(sourceId) as mapboxgl.GeoJSONSource).setData(geojsonData);
+    } else {
+      map.current.addSource(sourceId, {
+        type: 'geojson',
+        data: geojsonData,
+      });
+
+      map.current.addLayer({
+        id: layerId,
+        type: 'heatmap',
+        source: sourceId,
+        maxzoom: 15,
+        paint: {
+          // Increase the heatmap weight based on frequency and property magnitude
+          'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'danger_level'],
+            'low', 0.3,
+            'medium', 0.6,
+            'high', 1,
+          ],
+          // Increase the heatmap color weight by zoom level
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 1,
+            15, 3,
+          ],
+          // Color ramp for heatmap
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0, 'rgba(33,102,172,0)',
+            0.2, 'rgb(103,169,207)',
+            0.4, 'rgb(209,229,240)',
+            0.6, 'rgb(253,219,199)',
+            0.8, 'rgb(239,138,98)',
+            1, 'rgb(178,24,43)',
+          ],
+          // Adjust the heatmap radius by zoom level
+          'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 2,
+            15, 20,
+          ],
+          // Transition from heatmap to circle layer by zoom level
+          'heatmap-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7, 1,
+            15, 0,
+          ],
+        },
+      });
+    }
 
     // Add markers for problems with coordinates
     problems.forEach(problem => {
